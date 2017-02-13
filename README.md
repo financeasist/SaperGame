@@ -10,5 +10,6 @@ ___
 *When you have cloned directory on your local machine, import a project to IDE and run src/main/java/Main.java;* 
 
 ___
+##### Example:
 
-
+![alt text](src/main/java/resources/screenshots/1.png "Description goes here")
