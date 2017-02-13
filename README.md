@@ -5,5 +5,10 @@ ___
 ___
  
 ##### used jdk 1.8, Spring Tool Suite 3.8.1 IDE, AWT and Swing for gui, log4j for logging. OS: Windows 8. Maven 4.0.0
+___
+##### How to run
+*When you have cloned directory on your local machine, import a project to IDE and run src/main/java/Main.java;* 
+
+___
 
 
