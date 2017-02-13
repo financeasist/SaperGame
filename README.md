@@ -12,4 +12,5 @@ ___
 ___
 ##### Example:
 
-![alt text](src/main/java/resources/screenshots/1.png "Description goes here")
+![image](https://cloud.githubusercontent.com/assets/17303027/22884116/e4b8be64-f1fb-11e6-9ed9-bf133c35b073.png)
+
