@@ -9,19 +9,28 @@ import model.Board;
 import model.Cell;
 import view.CellButtonView;
 import view.StartFrameView;
-
+/**
+ * This is listener(Controller) for CellButtonView. Takes data from this view and manage it.
+ * @author Roman Grupskyi
+ * @version 1.0 since 12.02.2017
+ */
 public class ButtonMouseListener implements MouseListener {
 
 	private CellButtonView cellButtonView;
 	private Cell cell;
 	private int allFlagsCount; 
 	private int availableFlagsCount;
-	
+	/**
+	 * in the cinstrucnor we set cllButton instance which contains event data
+	 * @param cellButtonView
+	 */
 	public ButtonMouseListener(CellButtonView cellButtonView) {
 		super();
 		this.cellButtonView = cellButtonView;
 	}
-
+	/**
+	 * listen which mouse button was pressed and does logic depending on it
+	 */
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		Timer timer = StartFrameView.getTimerInstance();
@@ -86,6 +95,10 @@ public class ButtonMouseListener implements MouseListener {
 	public void mouseExited(MouseEvent e) {
 
 	}
+	/**
+	 * counts availableFlags count
+	 * @return count of available flags
+	 */
 	public int countAvailableFlags() {
 		int countFlags = 0;
 		Board bord = cell.getBord();
