@@ -1,0 +1,116 @@
+package controller;
+
+import javax.swing.JOptionPane;
+import model.Board;
+import model.Cell;
+import view.CellButtonView;
+import view.StartFrameView;
+
+public class CellButtonDrawManager {
+	CellButtonView cellButtonView;
+	ImgManager imgManager = new ImgManager();
+
+	/**
+	 * Constructor takes cellButtonView instance. 
+	 * @param cellButtonView
+	 */
+	public CellButtonDrawManager(CellButtonView cellButtonView) {
+		this.cellButtonView = cellButtonView;
+	}
+
+	public CellButtonView getCellButtonView() {
+		return cellButtonView;
+	}
+
+	public void setCellButtonView(CellButtonView cellButtonView) {
+		this.cellButtonView = cellButtonView;
+	}
+	
+	
+	/**
+	 * opens all board and drows congratulations
+	 */
+	public void drowCongretulate() {
+		Cell cell = cellButtonView.getCell();
+		Board bord = cell.getBord();
+		CellButtonView[][] cellButtons = bord.getCellButtons();
+		for (CellButtonView[] cells : cellButtons) {
+			for (CellButtonView cellButtonView : cells) {
+				if (cellButtonView.getCell().isSuggestBomb())
+					drawFlag();
+				else
+					cellButtonView.draw(true);
+			}
+		}
+		JOptionPane.showMessageDialog(null, "congratulations! You Win!");
+	}
+
+
+
+	/**
+	 * opens all empty neighbours
+	 */
+	public void showEmpty() {
+		Cell cell = cellButtonView.getCell();
+		CellButtonView[][] cellButtons = cell.getBord().getCellButtons();
+		for (CellButtonView[] cells : cellButtons) {
+			for (CellButtonView cellButtonView : cells) {
+				if (cellButtonView.getCell().isNeedsToOpen())
+					cellButtonView.draw(true);
+			}
+		}
+	}
+
+	/**
+	 * opens all board and drows explosion
+	 */
+	public void showBang() {
+		Cell cell = cellButtonView.getCell();
+		cell.setCurrentStateImgType("BUTTON_BANG");
+		Board bord = cell.getBord();
+		CellButtonView[][] cellButtons = bord.getCellButtons();
+		for (CellButtonView[] cells : cellButtons) {
+			for (CellButtonView cellButtonView : cells) {
+				cellButtonView.getCell().findCellsArround();
+				cellButtonView.draw(true);
+			}
+		}
+		StartFrameView.setSadBtnSmileIcon();
+		JOptionPane.showMessageDialog(null, "It was a bomb! You lose!");
+	}
+
+	/**
+	 * draws current number
+	 */
+	public void drawCurrentNumber() {
+		cellButtonView.setIcon(imgManager.getCurrentNumberImg(cellButtonView));
+	}
+
+	/**
+	 * draws closed button
+	 */
+	public void drawClosed() {
+		cellButtonView.setIcon(imgManager.getCurrentNumberImg(cellButtonView));
+	}
+
+	/**
+	 * draws bang
+	 */
+	public void drawBang() {
+		cellButtonView.setIcon(imgManager.getImg(ImgManager.BUTTON_BANG));
+	}
+
+	/**
+	 * draws bomb
+	 */
+	public void drawBomb() {
+		cellButtonView.setIcon(imgManager.getImg(ImgManager.BUTTON_BOMB));
+	}
+
+	/**
+	 * draws flag
+	 */
+	public void drawFlag() {
+		cellButtonView.setIcon(imgManager.getImg(ImgManager.BUTTON_FLAG));
+	}
+}

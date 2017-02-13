@@ -15,7 +15,7 @@ import view.StartFrameView;
  * @version 1.0 since 12.02.2017
  */
 public class ButtonMouseListener implements MouseListener {
-
+	CellButtonDrawManager cellButtonDrawManager; 
 	private CellButtonView cellButtonView;
 	private Cell cell;
 	private int allFlagsCount; 
@@ -27,6 +27,7 @@ public class ButtonMouseListener implements MouseListener {
 	public ButtonMouseListener(CellButtonView cellButtonView) {
 		super();
 		this.cellButtonView = cellButtonView;
+		cellButtonDrawManager = new CellButtonDrawManager(cellButtonView);
 	}
 	/**
 	 * listen which mouse button was pressed and does logic depending on it
@@ -46,12 +47,12 @@ public class ButtonMouseListener implements MouseListener {
 				cell.findCellsArround();
 				cellButtonView.draw(true);
 				if (cell.isEmpty()) {
-					cellButtonView.showEmpty();
+					cellButtonDrawManager.showEmpty();
 				}
 
 			} else {
 				StartFrameView.getTimerInstance().stop();
-				cellButtonView.showBang();
+				cellButtonDrawManager.showBang();
 			}
 		}
 		if (mouseButton == 3) {
@@ -59,7 +60,7 @@ public class ButtonMouseListener implements MouseListener {
 				cell.setSuggestBomb(false);
 				availableFlagsCount++;
 				StartFrameView.setBombCountIntoControlPanel(availableFlagsCount);
-				cellButtonView.draw(false);
+				cellButtonDrawManager.drawClosed();
 			} else {
 				availableFlagsCount = countAvailableFlags();
 				if (availableFlagsCount > 0) {
@@ -70,7 +71,7 @@ public class ButtonMouseListener implements MouseListener {
 					Board bord = cell.getBord();
 					if (bord.isFinish(bord.getCountOfBombs())) {
 						timer.stop();
-						cellButtonView.drowCongretulate();
+						cellButtonDrawManager.drowCongretulate();
 					}
 				}
 			}

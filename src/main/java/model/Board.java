@@ -40,8 +40,8 @@ public class Board {
 		for (int x = 0; x != cellButtonViews.length; x++) {
 			for (int y = 0; y != cellButtonViews[0].length; y++) {
 				Cell cell = cells[x][y];
-				cellButtonViews[x][y] = new CellButtonView();
-				cellButtonViews[x][y].setCell(cell);
+				cellButtonViews[x][y] = new CellButtonView(cell);
+				//cellButtonViews[x][y].setCell(cell);
 			}
 		}
 
