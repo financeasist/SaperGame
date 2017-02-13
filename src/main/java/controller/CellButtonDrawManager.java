@@ -5,7 +5,11 @@ import model.Board;
 import model.Cell;
 import view.CellButtonView;
 import view.StartFrameView;
-
+/**
+ * This class contains drawing methods for CellButtonView
+ * @author Roman Grupskyi
+ * @version 1.0 since 13.02.2017
+ */
 public class CellButtonDrawManager {
 	CellButtonView cellButtonView;
 	ImgManager imgManager = new ImgManager();
@@ -17,15 +21,6 @@ public class CellButtonDrawManager {
 	public CellButtonDrawManager(CellButtonView cellButtonView) {
 		this.cellButtonView = cellButtonView;
 	}
-
-	public CellButtonView getCellButtonView() {
-		return cellButtonView;
-	}
-
-	public void setCellButtonView(CellButtonView cellButtonView) {
-		this.cellButtonView = cellButtonView;
-	}
-	
 	
 	/**
 	 * opens all board and drows congratulations
@@ -44,8 +39,6 @@ public class CellButtonDrawManager {
 		}
 		JOptionPane.showMessageDialog(null, "congratulations! You Win!");
 	}
-
-
 
 	/**
 	 * opens all empty neighbours
