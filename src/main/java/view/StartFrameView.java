@@ -28,7 +28,7 @@ import javax.swing.Timer;
 import org.apache.log4j.Logger;
 
 import commons.Constants;
-import controller.TimerActionListener;
+import controller.TimerActionEventManager;
 import model.Board;
 
 /**
@@ -105,7 +105,7 @@ public class StartFrameView {
 		Timer timer = StartFrameView.getTimerInstance();
 		timer.stop();
 		ActionListener[] actionListeners = timer.getActionListeners();
-		TimerActionListener listener = (TimerActionListener) actionListeners[0];
+		TimerActionEventManager listener = (TimerActionEventManager) actionListeners[0];
 		listener.resetCount();
 		listener.setTextField(jt_time);
 	}
@@ -264,9 +264,7 @@ public class StartFrameView {
 
 	/**
 	 * Placing specified as parameter window at the center of the screen
-	 *
-	 * @param w
-	 *            centered window
+	 * @param w centered window
 	 */
 	public static void centre(Window w) {
 		Dimension us = w.getSize();
@@ -322,7 +320,7 @@ public class StartFrameView {
 	 */
 	public static Timer getTimerInstance() {
 		int milisec = 1000;
-		ActionListener listener = new TimerActionListener();
+		ActionListener listener = new TimerActionEventManager();
 		if (timer == null) {
 			timer = new Timer(milisec, listener);
 		}

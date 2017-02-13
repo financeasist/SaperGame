@@ -14,7 +14,7 @@ import view.StartFrameView;
  * @author Roman Grupskyi
  * @version 1.0 since 12.02.2017
  */
-public class ButtonMouseListener implements MouseListener {
+public class CellButtonMouseEventsManager implements MouseListener {
 	CellButtonDrawManager cellButtonDrawManager; 
 	private CellButtonView cellButtonView;
 	private Cell cell;
@@ -24,7 +24,7 @@ public class ButtonMouseListener implements MouseListener {
 	 * in the cinstrucnor we set cllButton instance which contains event data
 	 * @param cellButtonView
 	 */
-	public ButtonMouseListener(CellButtonView cellButtonView) {
+	public CellButtonMouseEventsManager(CellButtonView cellButtonView) {
 		super();
 		this.cellButtonView = cellButtonView;
 		cellButtonDrawManager = new CellButtonDrawManager(cellButtonView);

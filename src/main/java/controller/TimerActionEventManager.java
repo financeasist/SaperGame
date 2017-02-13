@@ -11,7 +11,7 @@ import javax.swing.JTextField;
  * @author Roman Grupskyi
  * @version 1.0 since 10/02/2017
  */
-public class TimerActionListener implements ActionListener {
+public class TimerActionEventManager implements ActionListener {
 	private long count;
 	private JTextField jt_time;
 

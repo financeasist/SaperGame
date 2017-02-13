@@ -83,7 +83,7 @@ public class CellButtonDrawManager {
 	 * draws closed button
 	 */
 	public void drawClosed() {
-		cellButtonView.setIcon(imgManager.getCurrentNumberImg(cellButtonView));
+		cellButtonView.setIcon(null);
 	}
 
 	/**
