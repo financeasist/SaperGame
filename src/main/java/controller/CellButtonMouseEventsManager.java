@@ -20,6 +20,7 @@ public class CellButtonMouseEventsManager implements MouseListener {
 	private Cell cell;
 	private int allFlagsCount; 
 	private int availableFlagsCount;
+	BotController bot = BotController.getBotInstance();
 	/**
 	 * in the cinstrucnor we set cllButton instance which contains event data
 	 * @param cellButtonView
@@ -40,6 +41,15 @@ public class CellButtonMouseEventsManager implements MouseListener {
 		Board board = cell.getBord();
 		allFlagsCount = board.getCountOfBombs();
 		int mouseButton = e.getButton();
+		if(mouseButton == 0){
+			if (!cell.isBomb()) {
+				cell.setSuggestEmpty(true);
+				cell.getBord().unSelectCells();
+				cell.findCellsArround();
+				cellButtonView.draw(true);
+				bot.findNeighbours(cell);
+			}
+		}
 		if (mouseButton == 1) {
 			if (!cell.isBomb()) {
 				cell.setSuggestEmpty(true);

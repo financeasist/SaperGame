@@ -17,7 +17,6 @@ import model.Cell;
 public class CellButtonView extends JButton {
 	private Cell cell;
 	private CellButtonDrawManager cellButtonDrawManager = new CellButtonDrawManager(this);;
-
 	public CellButtonView(Cell cell) {
 		super();
 		this.cell = cell;

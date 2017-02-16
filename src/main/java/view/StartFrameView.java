@@ -28,6 +28,7 @@ import javax.swing.Timer;
 import org.apache.log4j.Logger;
 
 import commons.Constants;
+import controller.BotController;
 import controller.TimerActionEventManager;
 import model.Board;
 
@@ -50,6 +51,8 @@ public class StartFrameView {
 	private boolean intermediateState;
 	private boolean beginerState;
 	private boolean expertState;
+	private boolean botState;
+	BotController botInstance;
 
 	/**
 	 * initializes a start window ControlPanel and BoardPanel
@@ -136,8 +139,12 @@ public class StartFrameView {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				btnsmile.setIcon(new ImageIcon("src\\main\\resources\\img\\new game.gif"));
-				insertBoardPanelDependsOnSelectedMenu();
+				if (!botState) {
+					btnsmile.setIcon(new ImageIcon("src\\main\\resources\\img\\new game.gif"));
+					insertBoardPanelDependsOnSelectedMenu();
+				}else{
+					botInstance.startBot();
+				}
 			}
 		});
 		controlPanel.setLayout(new BoxLayout(controlPanel, BoxLayout.X_AXIS));
@@ -193,17 +200,19 @@ public class StartFrameView {
 		final JCheckBoxMenuItem beginner = new JCheckBoxMenuItem("Begineer");
 		final JCheckBoxMenuItem intermediate = new JCheckBoxMenuItem("Intermediate");
 		final JCheckBoxMenuItem expert = new JCheckBoxMenuItem("Expert");
-		final JCheckBoxMenuItem custom = new JCheckBoxMenuItem("Custom");
+		final JCheckBoxMenuItem bot = new JCheckBoxMenuItem("Bot");
 		ButtonGroup status = new ButtonGroup();
 		status.add(beginner);
 		status.add(intermediate);
 		status.add(expert);
-		status.add(custom);
+		status.add(bot);
 		game.add(newGame);
 		game.addSeparator();
 		game.add(beginner);
 		game.add(intermediate);
 		game.add(expert);
+		game.addSeparator();
+		game.add(bot);
 		game.addSeparator();
 		game.add(exit);
 		help.add(helpitem);
@@ -250,6 +259,21 @@ public class StartFrameView {
 
 			}
 		});
+		bot.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				botState = bot.getState();
+				setBeginerState(false);
+				setIntermediateState(false);
+				setExpertState(false);
+				addCellButtonsToBoardPanel(Constants.BOARD_WIDTH_EASY, Constants.BOARD_HEIGHT_EASY,
+						Constants.COUNT_OF_BOMBS_EASY);
+				botInstance = new BotController(board);
+				initTimer();
+			}
+
+		});
 		exit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.exit(0);
@@ -264,7 +288,9 @@ public class StartFrameView {
 
 	/**
 	 * Placing specified as parameter window at the center of the screen
-	 * @param w centered window
+	 * 
+	 * @param w
+	 *            centered window
 	 */
 	public static void centre(Window w) {
 		Dimension us = w.getSize();
@@ -313,9 +339,11 @@ public class StartFrameView {
 		btnsmile.setIcon(new ImageIcon("src\\main\\resources\\img\\crape.gif"));
 
 	}
+
 	/**
-	 * method returns instance of Timer.
-	 * in the field - 'milisec' we can set a timer speed.
+	 * method returns instance of Timer. in the field - 'milisec' we can set a
+	 * timer speed.
+	 * 
 	 * @return
 	 */
 	public static Timer getTimerInstance() {
