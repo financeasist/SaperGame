@@ -6,9 +6,9 @@ import java.awt.event.MouseListener;
 import model.Cell;
 import view.CellButtonView;
 /**
- * This is listener(Controller) for CellButtonView. Takes data from this view and manage it.
+ * This is listener(Controller) for CellButtonView. Takes data from that view and manage it.
  * @author Roman Grupskyi
- * @version 1.0 since 12.02.2017
+ * @version 1.3 since 17.02.2017
  */
 public class CellButtonMouseEventsManager implements MouseListener {
 	private CellButtonView cellButtonView;
@@ -16,7 +16,7 @@ public class CellButtonMouseEventsManager implements MouseListener {
 
 
 	/**
-	 * in the cinstrucnor we set cllButton instance which contains event data
+	 * in the construcnor we set cllButton instance which contains event data
 	 * @param cellButtonView
 	 */
 	public CellButtonMouseEventsManager(CellButtonView cellButtonView) {

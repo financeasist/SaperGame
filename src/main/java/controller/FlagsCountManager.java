@@ -3,6 +3,13 @@ package controller;
 import model.Board;
 import model.Cell;
 
+/**
+ * class created using Singleton pattern. This class counts how many flags user
+ * can use.
+ * 
+ * @author Roman Grupskyi
+ * @version 1.0 since 02.2017
+ */
 public class FlagsCountManager {
 	private int allFlagsCount;
 	private int availableFlagsCount;
@@ -12,6 +19,12 @@ public class FlagsCountManager {
 		this.allFlagsCount = allFlagsCount;
 	}
 
+	/**
+	 * allFlagsCount equals bombsCount on board
+	 * 
+	 * @param allFlagsCount
+	 * @return
+	 */
 	public static FlagsCountManager getFlagsControllerInstance(int allFlagsCount) {
 		if (flagsControllerInstance == null) {
 			flagsControllerInstance = new FlagsCountManager(allFlagsCount);
@@ -54,10 +67,11 @@ public class FlagsCountManager {
 		else
 			availableFlagsCount = 0;
 	}
+
 	/**
 	 * increments availableFlagsCount;
 	 */
-	public void incrementAvailableFlagsCount(){
-		this.availableFlagsCount ++;
+	public void incrementAvailableFlagsCount() {
+		this.availableFlagsCount++;
 	}
 }
