@@ -34,8 +34,8 @@ public class Board {
 		this.cells = new Cell[width][height];
 		this.countOfBombs = countOfBombs;
 		fillBoardEmptyCells();
-		//setBombs();
-		setDefBombs();
+		setBombs();
+	//	setDefBombs();
 		unSelectCells();
 		cellButtonViews = new CellButtonView[width][height];
 		for (int x = 0; x != cellButtonViews.length; x++) {

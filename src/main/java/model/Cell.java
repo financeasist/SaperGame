@@ -140,7 +140,7 @@ public class Cell {
 	 * this is the main method of this application. he finds all neighbours
 	 * current cell and calculates field bombArround. Then, if the current cell
 	 * is empty, calls itself recursively until all around empty cells will not
-	 * open. (loging used for easier understanding of his work or debuging).
+	 * open. (loging used for easier understanding how this work or debuging).
 	 */
 	public void findCellsArround() {
 		Cell neibourCell;

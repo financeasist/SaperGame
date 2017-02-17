@@ -31,6 +31,7 @@ public class ImgManager {
 	public static final String BUTTON_BOMB = "src/main/resources/img/bomb.gif";
 	public static final String BUTTON_BANG = "src/main/resources/img/bang.gif";
 	public static final String BUTTON_FLAG = "src/main/resources/img/flag0.gif";
+	public static final String BUTTON_NEUTRALIZED = "src/main/resources/img/13.gif";
 	
 	private List<String> imgUrlList;
 

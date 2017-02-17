@@ -5,8 +5,10 @@ import model.Board;
 import model.Cell;
 import view.CellButtonView;
 import view.StartFrameView;
+
 /**
  * This class contains drawing methods for CellButtonView
+ * 
  * @author Roman Grupskyi
  * @version 1.0 since 13.02.2017
  */
@@ -15,13 +17,14 @@ public class CellButtonDrawManager {
 	ImgManager imgManager = new ImgManager();
 
 	/**
-	 * Constructor takes cellButtonView instance. 
+	 * Constructor takes cellButtonView instance.
+	 * 
 	 * @param cellButtonView
 	 */
 	public CellButtonDrawManager(CellButtonView cellButtonView) {
 		this.cellButtonView = cellButtonView;
 	}
-	
+
 	/**
 	 * opens all board and drows congratulations
 	 */
@@ -65,7 +68,12 @@ public class CellButtonDrawManager {
 		for (CellButtonView[] cells : cellButtons) {
 			for (CellButtonView cellButtonView : cells) {
 				cellButtonView.getCell().findCellsArround();
-				cellButtonView.draw(true);
+				if (cellButtonView.getCell().isSuggestBomb()) {
+					if (cellButtonView.getCell().isSuggestBomb() && cellButtonView.getCell().isBomb())
+						cellButtonView.getCell().setCurrentStateImgType("BUTTON_NEUTRALIZED");
+					cellButtonView.draw(true);
+				} else
+					cellButtonView.draw(true);
 			}
 		}
 		StartFrameView.setSadBtnSmileIcon();
@@ -97,7 +105,10 @@ public class CellButtonDrawManager {
 	 * draws bomb
 	 */
 	public void drawBomb() {
-		cellButtonView.setIcon(imgManager.getImg(ImgManager.BUTTON_BOMB));
+		if ("BUTTON_NEUTRALIZED".equals(cellButtonView.getCell().getCurrentStateImgType())) {
+			cellButtonView.setIcon(imgManager.getImg(ImgManager.BUTTON_NEUTRALIZED));
+		} else
+			cellButtonView.setIcon(imgManager.getImg(ImgManager.BUTTON_BOMB));
 	}
 
 	/**

@@ -43,10 +43,12 @@ public class BotController {
 	public void startBot() {
 		log.debug("started method botStart");
 		Cell cell = doRandomClick();
+		resetProbabilities();
 		int x = cell.getPositionX();
 		int y = cell.getPositionY();
 		int bombAround = cell.getBombArround();
-		log.debug("doRandomClick return  Cell[" + x + "][" + y + "]" + "bombArround - " + bombAround);
+		log.debug("doRandomClick return  Cell[" + x + "][" + y + "]" + "bombArround = " + bombAround);
+	
 		ArrayList<Cell> list = (ArrayList<Cell>) findNeighbours(cell);
 		
 	}
