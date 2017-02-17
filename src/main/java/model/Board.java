@@ -42,7 +42,7 @@ public class Board {
 			for (int y = 0; y != cellButtonViews[0].length; y++) {
 				Cell cell = cells[x][y];
 				cellButtonViews[x][y] = new CellButtonView(cell);
-				//cellButtonViews[x][y].setCell(cell);
+			
 			}
 		}
 

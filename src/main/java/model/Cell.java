@@ -3,7 +3,14 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.Timer;
+
 import org.apache.log4j.Logger;
+
+import controller.CellButtonDrawManager;
+import controller.FlagsCountManager;
+import view.CellButtonView;
+import view.StartFrameView;
 
 /**
  * This class represents Cell. The basic idea is that each cell knows itself and
@@ -187,5 +194,60 @@ public class Cell {
 				}
 			}
 		}
+	}
+/**
+ * method opens cell on board
+ * @return this Cell
+ */
+	public Cell doOpen() {
+		Timer timer = StartFrameView.getTimerInstance();		
+		CellButtonView[][] cellButtonViews = board.getCellButtons();
+		CellButtonView cellButtonView = cellButtonViews[positionX][positionY];
+		CellButtonDrawManager cellButtonDrawManager = new CellButtonDrawManager(cellButtonView);
+		timer.start();
+		if (!isBomb()) {
+			setSuggestEmpty(true);
+			getBord().unSelectCells();
+			findCellsArround();
+			cellButtonView.draw(true);
+			if (isEmpty()) {
+				cellButtonDrawManager.showEmpty();
+			}
+		} else {
+			StartFrameView.getTimerInstance().stop();
+			cellButtonDrawManager.showBang();
+
+		}
+		return this;
+	}
+	/**
+	 * method marks cell like a flag(suggestBomb)
+	 * @returns  this cell
+	 */
+	public Cell doFlag(){
+		Timer timer = StartFrameView.getTimerInstance();
+		CellButtonView[][] cellButtonViews = board.getCellButtons();
+		CellButtonView cellButtonView = cellButtonViews[positionX][positionY];
+		CellButtonDrawManager cellButtonDrawManager = new CellButtonDrawManager(cellButtonView);
+		FlagsCountManager flagsControllerInstance = FlagsCountManager.getFlagsControllerInstance(board.getCountOfBombs());
+		if (isSuggestBomb()) {
+			setSuggestBomb(false);
+			flagsControllerInstance.incrementAvailableFlagsCount();
+			StartFrameView.setBombCountIntoControlPanel(flagsControllerInstance.getAvailableFlagsCount());
+			cellButtonDrawManager.drawClosed();
+		} else {
+			flagsControllerInstance.countAvailableFlags(board);
+			if (flagsControllerInstance.getAvailableFlagsCount() > 0) {
+				setSuggestBomb(true);
+				cellButtonView.draw(false);
+				flagsControllerInstance.countAvailableFlags(board);
+				StartFrameView.setBombCountIntoControlPanel(flagsControllerInstance.getAvailableFlagsCount());
+				if (board.isFinish(board.getCountOfBombs())) {
+					timer.stop();
+					cellButtonDrawManager.drowCongretulate();
+				}
+			}
+		}	
+		return this;	
 	}
 }

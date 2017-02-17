@@ -143,6 +143,8 @@ public class StartFrameView {
 					btnsmile.setIcon(new ImageIcon("src\\main\\resources\\img\\new game.gif"));
 					insertBoardPanelDependsOnSelectedMenu();
 				}else{
+//					btnsmile.setIcon(new ImageIcon("src\\main\\resources\\img\\new game.gif"));
+//					insertBoardPanelDependsOnSelectedMenu();
 					botInstance.startBot();
 				}
 			}
