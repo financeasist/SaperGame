@@ -35,13 +35,14 @@ public class Board {
 		this.countOfBombs = countOfBombs;
 		fillBoardEmptyCells();
 		setBombs();
+	//	setDefBombs();
 		unSelectCells();
 		cellButtonViews = new CellButtonView[width][height];
 		for (int x = 0; x != cellButtonViews.length; x++) {
 			for (int y = 0; y != cellButtonViews[0].length; y++) {
 				Cell cell = cells[x][y];
 				cellButtonViews[x][y] = new CellButtonView(cell);
-				//cellButtonViews[x][y].setCell(cell);
+			
 			}
 		}
 
@@ -153,7 +154,19 @@ public class Board {
 			}
 		}
 	}
-
+	
+	public void setDefBombs(){
+		cells[1][1].setHasBomb(true);	
+		cells[0][4].setHasBomb(true);
+		cells[5][1].setHasBomb(true);
+		cells[6][6].setHasBomb(true);
+		cells[0][9].setHasBomb(true);
+		cells[8][0].setHasBomb(true);
+		cells[9][7].setHasBomb(true);
+		cells[9][9].setHasBomb(true);
+		cells[5][5].setHasBomb(true);
+		cells[2][4].setHasBomb(true);
+	}
 	/**
 	 * cheks shoud game finish or not
 	 * 
