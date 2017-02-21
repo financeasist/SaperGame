@@ -27,43 +27,52 @@ public class BotController {
 		if (botInstance == null) {
 			this.board = board;
 			cells = board.getCells();
-			probabilities = new Float[board.getBoardWidth()][board.getBoardHeight()];
 		}
 	}
-//
-//	public static BotController getBotInstance() {
-//		return botInstance;
-//	}
 
 	/**
 	 * method does random clisk on board and gets clicked cell. Then finds all
-	 * neighbours arround that cell and calculates a probability to find in them
+	 * not open cells and calculates a probability to find in them
 	 * bomb
 	 * 
 	 */
 	public void startBot() {
 		log.debug("started method botStart");
-		Cell cell = doRandomClick();    // does first random click
-		log.debug("doRandomClick return  Cell[" + cell.getPositionX() + "][" + cell.getPositionY()+ "]" + "bombArround = " + cell.getBombArround());
-		resetProbabilities();      // reset probabilities(sets 0.5f)
-		setProbabilityIntoClosedCells(); // sets prob into closed cells
-		setBotFlags();      // marks bombs
-		Cell clickedCell = doNextClick();       // calculates and doesNextClick
-		log.debug("doNextClick() returns Cell[" + clickedCell.getPositionX() + "][" + clickedCell.getPositionY()
-				+ "] value = " + clickedCell.getBombArround());
-	}
-
-	/**
-	 * fills array probabilities by 0.5f
-	 */
-	public void resetProbabilities() {
-		for (int i = 0; i < board.getBoardWidth(); i++) {
-			for (int j = 0; j < board.getBoardHeight(); j++) {
-				probabilities[i][j] = 0.5f;
-			}
+		initProbabilities(); 					//initializes probabilities[][] by 0.5f
+		Cell cell = doRandomClick();   			 // does first random click
+		log.debug("doRandomClick return  Cell[" + cell.getPositionX() + "][" + cell.getPositionY()+ "]" + "bombArround = " + cell.getBombArround());	
+		Cell clickedCell =	doNextClick();
+		if (clickedCell == cells[0][0]){
+			doNextClick();
 		}
 	}
+	
+	private Cell doNextClick() {
+		Cell clickedCell = null;
+		setProbabilityIntoClosedCells(); 			// sets prob into closed cells
+		setBotFlags();     							 // marks bombs
+		Cell newCell= findAndClickOnCellWithLatestProb();     		  // calculates and doesNextClick	
+		if (clickedCell != newCell){
+			clickedCell = newCell;
+			log.debug("doNextClick() returns Cell[" + clickedCell.getPositionX() + "][" + clickedCell.getPositionY()+ "] value = " + clickedCell.getBombArround());
+		}else
+			clickedCell = doRandomClick();
+		return clickedCell;
+	}
+	
 
+	/**
+	 * initializas all probabilities[][] by value 0.5f 
+	 */
+	public void initProbabilities(){
+		probabilities = new Float[board.getBoardWidth()][board.getBoardHeight()];
+		for (int i = 0; i < board.getBoardWidth(); i++) {
+			for (int j = 0; j < board.getBoardHeight(); j++) {
+				probabilities[i][j] = 0.5f;									// reset probabilities(sets 0.5f)		
+			}
+		}     						
+	}
+	
 	/**
 	 * does random click on board
 	 * 
@@ -77,16 +86,14 @@ public class BotController {
 		Cell openedCell = cell.doOpen();
 		return openedCell;
 	}
-
-	public Cell doNextClick() {
-		log.debug("satrted doNextClick()");
-		Cell newClikedCell = findAndClickOnCellWithLatestProb();
-		return newClikedCell;
-	}
-
+	
+	/**
+	 * finds and clicks on cell with latest probability
+	 * @return
+	 */
 	private Cell findAndClickOnCellWithLatestProb() {
-		Cell cellWithLessProbabiliti = findCellWithLeastProbabiliti(findTheLeastProbability());
-		return cellWithLessProbabiliti.doOpen();
+		Cell cell = findCellWithLeastProbabiliti(findTheLeastProbability());
+		return cell.doOpen();
 	}
 	/**
 	 * runs on cells[][] and finds closed cells. Than sets into this cells probability
