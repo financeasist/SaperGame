@@ -30,10 +30,10 @@ public class BotController {
 			probabilities = new Float[board.getBoardWidth()][board.getBoardHeight()];
 		}
 	}
-
-	public static BotController getBotInstance() {
-		return botInstance;
-	}
+//
+//	public static BotController getBotInstance() {
+//		return botInstance;
+//	}
 
 	/**
 	 * method does random clisk on board and gets clicked cell. Then finds all
@@ -43,28 +43,23 @@ public class BotController {
 	 */
 	public void startBot() {
 		log.debug("started method botStart");
-		Cell cell = doRandomClick();
-		int x = cell.getPositionX();
-		int y = cell.getPositionY();
-		int bombAround = cell.getBombArround();
-		log.debug("doRandomClick return  Cell[" + x + "][" + y + "]" + "bombArround = " + bombAround);
-		resetProbabilities();
-		Cell clickedCell = doNextClick();
+		Cell cell = doRandomClick();    // does first random click
+		log.debug("doRandomClick return  Cell[" + cell.getPositionX() + "][" + cell.getPositionY()+ "]" + "bombArround = " + cell.getBombArround());
+		resetProbabilities();      // reset probabilities(sets 0.5f)
+		setProbabilityIntoClosedCells(); // sets prob into closed cells
+		setBotFlags();      // marks bombs
+		Cell clickedCell = doNextClick();       // calculates and doesNextClick
 		log.debug("doNextClick() returns Cell[" + clickedCell.getPositionX() + "][" + clickedCell.getPositionY()
 				+ "] value = " + clickedCell.getBombArround());
-
-		// ArrayList<Cell> list = (ArrayList<Cell>) findNeighbours(cell);
-
 	}
 
 	/**
-	 * fills array probabilities by zero
+	 * fills array probabilities by 0.5f
 	 */
 	public void resetProbabilities() {
 		for (int i = 0; i < board.getBoardWidth(); i++) {
 			for (int j = 0; j < board.getBoardHeight(); j++) {
-
-				probabilities[i][j] = 0f;
+				probabilities[i][j] = 0.5f;
 			}
 		}
 	}
@@ -85,32 +80,17 @@ public class BotController {
 
 	public Cell doNextClick() {
 		log.debug("satrted doNextClick()");
-		setProbabilityIntoClosedCells();
-		setBotFlags();
 		Cell newClikedCell = findAndClickOnCellWithLatestProb();
 		return newClikedCell;
 	}
 
 	private Cell findAndClickOnCellWithLatestProb() {
-		Cell cellWithLessProbabiliti = findCellWithLessProbabiliti(findTheLeastProbability());
-		cellWithLessProbabiliti.doOpen();
-		// Cell clickedCell = null;
-		// for (Cell[] row : cells) {
-		// for (Cell cell : row) {
-		// if (!cell.isNeedsToOpen()) {
-		// if (cell.equals(cellWithLessProbabiliti)) {
-		// clickedCell = cell.doOpen();
-		// // }else{
-		// // clickedCell = doRandomClick();
-		// // }
-		//
-		// }
-		// }
-		// }
-		// }
-		return cellWithLessProbabiliti;
+		Cell cellWithLessProbabiliti = findCellWithLeastProbabiliti(findTheLeastProbability());
+		return cellWithLessProbabiliti.doOpen();
 	}
-
+	/**
+	 * runs on cells[][] and finds closed cells. Than sets into this cells probability
+	 */
 	private void setProbabilityIntoClosedCells() {
 		for (Cell[] row : cells) {
 			for (Cell cell : row) {
@@ -120,12 +100,13 @@ public class BotController {
 			}
 		}
 	}
-
+	/**
+	 * marks bombs (if cells[i][j] has probability "1" - calls method doFlag() from Cell
+	 */
 	private void setBotFlags() {
 		log.debug("started setBotFlags()");
 		for (int i = 0; i < board.getBoardWidth(); i++) {
 			for (int j = 0; j < board.getBoardHeight(); j++) {
-				if (probabilities[i][j] != null) {
 					if (probabilities[i][j] == 1f) {
 						cells[i][j].doFlag();
 					}
@@ -133,37 +114,39 @@ public class BotController {
 				}
 			}
 		}
-	}
-
-	private Cell findCellWithLessProbabiliti(Float min) {
-		Cell cell = cells[0][0];
+	
+	private Cell findCellWithLeastProbabiliti(Float min) {
+		Cell cell = cells[1][0];
 		for (int i = 0; i < board.getBoardWidth(); i++) {
 			for (int j = 0; j < board.getBoardHeight(); j++) {
 				if (probabilities[i][j] == min) {
 					cell = cells[i][j];
 				}
-
 			}
 		}
-
 		return cell;
 	}
 
 	private Float findTheLeastProbability() {
-		Float min = 0f;
+		Float min = 1f;
 		for (int i = 0; i < board.getBoardWidth(); i++) {
 			for (int j = 0; j < board.getBoardHeight(); j++) {
-				if (probabilities[i][j] != null) {
-					if (probabilities[i][j] < min) {
-						min = probabilities[i][j];
-					}
-
+//				min = Float.min(min, probabilities[i][j]);
+				if (probabilities[i][j] < min) {
+					min = probabilities[i][j];
 				}
 			}
 		}
 		return min;
 	}
 
+	/**
+	 * checks all corner arround cell. And if one of them is 111 for example
+	 * then cell is bomb!
+	 * 
+	 * @param cell
+	 * @return
+	 */
 	public boolean isPredicat1(Cell cell) {
 		boolean predicat1 = false;
 		int x = cell.getPositionX();
@@ -173,7 +156,6 @@ public class BotController {
 		boolean upperLeftCorner = false;
 		boolean bottomLeftCorner = false;
 		if ((x + 1) < board.getBoardWidth() && (y + 1) < board.getBoardHeight()) {
-			// && (x - 1) > 0 && (y - 1) > 0) {
 			if ((y - 1) > 0) {
 				bottomRightCorner = (cells[x + 1][y].getBombArround() > 0) && (cells[x + 1][y - 1].getBombArround() > 0)
 						&& cells[x][y - 1].getBombArround() > 0;
@@ -192,16 +174,48 @@ public class BotController {
 		if (bottomRightCorner || upperRightСorner || upperLeftCorner || bottomLeftCorner) {
 			predicat1 = true;
 		}
-
 		return predicat1;
 	}
 
+	/**
+	 * checks predicats and depending on it sets the probability
+	 * 
+	 * @param cell
+	 */
 	public void setProbability(Cell cell) {
 		int x = cell.getPositionX();
 		int y = cell.getPositionY();
 		if (isPredicat1(cell)) {
 			probabilities[x][y] = 1f;
 		}
+		if (isPredicat2(cell)) {
+			probabilities[x][y] = 0f;
+		}
+	}
+
+	/**
+	 * is true, when one neighbour is flag, and another is 1. Means that this
+	 * cell is not a bomb!
+	 * 
+	 * @param cell
+	 * @return boolean
+	 */
+	private boolean isPredicat2(Cell cell) {
+		boolean predicat = false;
+		int x = cell.getPositionX();
+		int y = cell.getPositionY();
+		List<Cell> neighbours = findNeighbours(cell);
+		for (Cell neighbour : neighbours) {
+			if (neighbour.getBombArround() == 1) {
+				if ((x + 1) < board.getBoardHeight() && (y + 1) < board.getBoardWidth()) {
+					if (cells[x + 1][y].isSuggestBomb() || cells[x][y + 1].isSuggestBomb()
+							|| cells[x + 1][y + 1].isSuggestBomb()) {
+						predicat = true;
+					}
+				}
+			}
+		}
+		return predicat;
 	}
 
 	/**
