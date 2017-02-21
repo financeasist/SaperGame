@@ -34,9 +34,10 @@ public class CellButtonDrawManager {
 		CellButtonView[][] cellButtons = bord.getCellButtons();
 		for (CellButtonView[] cells : cellButtons) {
 			for (CellButtonView cellButtonView : cells) {
-				if (cellButtonView.getCell().isSuggestBomb())
-					drawFlag();
-				else
+				if (cellButtonView.getCell().isSuggestBomb()) {
+					cellButtonView.getCell().setCurrentStateImgType("BUTTON_NEUTRALIZED");
+					cellButtonView.draw(true);
+				} else
 					cellButtonView.draw(true);
 			}
 		}
