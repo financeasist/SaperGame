@@ -1,3 +1,4 @@
+package main;
 import view.StartFrameView;
 /**
  * This class contains the main method and starts the app

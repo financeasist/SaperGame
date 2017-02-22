@@ -134,13 +134,13 @@ public class StartFrameView {
 		jt_time.setForeground(Color.RED);
 		jt_time.setBackground(Color.black);
 		jt_time.setText("000");
-		btnsmile.setIcon(new ImageIcon("src\\main\\resources\\img\\new game.gif"));
+		btnsmile.setIcon(new ImageIcon("src/main/resources/img/new game.gif"));
 		btnsmile.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (!botState) {
-					btnsmile.setIcon(new ImageIcon("src\\main\\resources\\img\\new game.gif"));
+					btnsmile.setIcon(new ImageIcon("src/main/resources/img/new game.gif"));
 					insertBoardPanelDependsOnSelectedMenu();
 				}else{
 //					btnsmile.setIcon(new ImageIcon("src\\main\\resources\\img\\new game.gif"));
